@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catherine & Haolin — December 20, 2026</title>
+<meta name="description" content="Catherine & Haolin are getting married in Oʻahu, Hawaiʻi on December 20th, 2026.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='55' r='22' fill='%23a3823a'/%3E%3Cpath d='M50 45 C20 20, 5 35, 15 50 C25 60, 40 50, 50 45Z' fill='%23cdae6c'/%3E%3Cpath d='M50 45 C80 20, 95 35, 85 50 C75 60, 60 50, 50 45Z' fill='%23cdae6c'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:wght@500;600;700&family=Pinyon+Script&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-lang="en" class="gate-active">
+
+<!-- ============ ENVELOPE GATE ============ -->
+<div id="gate" class="gate">
+  <div class="envelope-wrap">
+    <p class="env-names">C &amp; L</p>
+    <button class="envelope" id="envelopeBtn" aria-label="Tap to open your invitation">
+      <svg viewBox="0 0 400 260" class="env-svg" aria-hidden="true">
+        <g transform="translate(200,20)">
+          <path d="M0 16 C-18 0,-38 -5,-33 8 C-30 17,-15 22,0 18Z" fill="none" stroke="#a3823a" stroke-width="1.8"/>
+          <path d="M0 16 C18 0,38 -5,33 8 C30 17,15 22,0 18Z" fill="none" stroke="#a3823a" stroke-width="1.8"/>
+          <circle cx="0" cy="18" r="5.5" fill="none" stroke="#7c5e28" stroke-width="1.8"/>
+        </g>
+        <rect x="20" y="46" width="360" height="196" rx="3" fill="#fffdf8" stroke="#cdae6c" stroke-width="2.2"/>
+        <rect x="28" y="53" width="344" height="182" fill="none" stroke="#cdae6c" stroke-width="1"/>
+        <path d="M20 46 L200 162 L380 46" fill="#ece2c8" stroke="#a3823a" stroke-width="2.2" stroke-linejoin="round"/>
+        <g transform="translate(200,152)">
+          <circle r="30" fill="#a3823a" stroke="#7c5e28" stroke-width="2"/>
+          <circle r="23" fill="none" stroke="#e8c26a" stroke-width="1"/>
+          <text y="9" font-family="'Playfair Display', serif" font-size="24" fill="#fdf1cf" text-anchor="middle">CL</text>
+        </g>
+      </svg>
+      <span class="env-wand" aria-hidden="true">
+        <svg viewBox="0 0 100 100">
+          <line x1="95" y1="95" x2="52" y2="52" stroke="#7c5e28" stroke-width="3.4" stroke-linecap="round"/>
+          <line x1="95" y1="95" x2="52" y2="52" stroke="#cda44f" stroke-width="1.2" stroke-linecap="round"/>
+          <circle cx="50" cy="50" r="4.6" fill="#e8c26a" stroke="#7c5e28" stroke-width="1"/>
+        </svg>
+      </span>
+    </button>
+    <p class="gate-hint i18n" data-en="Tap to open" data-zh="点击开启"></p>
+  </div>
+</div>
+
+<!-- Floating particle canvas -->
+<canvas id="particles" aria-hidden="true"></canvas>
+
+<!-- ============ SNITCH (global, roams the whole site) ============ -->
+<div class="snitch" id="snitch" title="Catch it!">
+  <svg viewBox="0 0 100 100" width="60" height="60">
+    <defs>
+      <radialGradient id="snitchGold" cx="36%" cy="30%" r="78%">
+        <stop offset="0%" stop-color="#fdf1cf"/>
+        <stop offset="45%" stop-color="#e8c26a"/>
+        <stop offset="100%" stop-color="#8f6c24"/>
+      </radialGradient>
+      <linearGradient id="wingGold" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#fffaf0" stop-opacity=".97"/>
+        <stop offset="100%" stop-color="#cda44f" stop-opacity=".5"/>
+      </linearGradient>
+    </defs>
+    <g class="wing wing-left">
+      <path d="M50 45 C34 30, 12 8, 1 12 C-4 14, 2 24, 10 30 C22 39, 38 44, 50 46Z" fill="url(#wingGold)" stroke="#a9852f" stroke-width="0.6"/>
+      <path d="M46 36 C30 22, 12 14, 3 15" fill="none" stroke="#a9852f" stroke-width="0.5" opacity=".65"/>
+      <path d="M47 41 C32 32, 16 27, 7 29" fill="none" stroke="#a9852f" stroke-width="0.5" opacity=".65"/>
+      <path d="M49 45 C36 40, 24 39, 16 42" fill="none" stroke="#a9852f" stroke-width="0.5" opacity=".55"/>
+    </g>
+    <g class="wing wing-right">
+      <path d="M50 45 C66 30, 88 8, 99 12 C104 14, 98 24, 90 30 C78 39, 62 44, 50 46Z" fill="url(#wingGold)" stroke="#a9852f" stroke-width="0.6"/>
+      <path d="M54 36 C70 22, 88 14, 97 15" fill="none" stroke="#a9852f" stroke-width="0.5" opacity=".65"/>
+      <path d="M53 41 C68 32, 84 27, 93 29" fill="none" stroke="#a9852f" stroke-width="0.5" opacity=".65"/>
+      <path d="M51 45 C64 40, 76 39, 84 42" fill="none" stroke="#a9852f" stroke-width="0.5" opacity=".55"/>
+    </g>
+    <circle cx="50" cy="56" r="19" fill="url(#snitchGold)" stroke="#7c5e28" stroke-width="1.4"/>
+    <g stroke="#7c5e28" fill="none" opacity=".55">
+      <path d="M38 47 C44 41, 56 41, 62 47" stroke-width="0.7"/>
+      <path d="M36 56 C44 62, 56 62, 64 56" stroke-width="0.7"/>
+      <path d="M50 39 C53 46, 53 66, 50 73" stroke-width="0.6"/>
+      <circle cx="50" cy="56" r="12" stroke-width="0.5"/>
+    </g>
+    <g fill="#fff3d2" opacity=".8">
+      <path d="M50 42 l1.4 3 3 1.4 -3 1.4 -1.4 3 -1.4-3 -3-1.4 3-1.4Z"/>
+    </g>
+    <ellipse cx="44" cy="49" rx="6" ry="3.4" fill="#fffaf0" opacity=".65" transform="rotate(-25 44 49)"/>
+  </svg>
+</div>
+
+<!-- Fixed control bar -->
+<div class="controls">
+  <button id="langToggle" class="pill-btn" aria-label="Switch language">
+    <span class="lang-en">中文</span><span class="lang-zh" style="display:none">EN</span>
+  </button>
+  <button id="musicToggle" class="pill-btn icon-btn" aria-label="Play music" aria-pressed="false">
+    <svg viewBox="0 0 24 24" class="icon-note"><path fill="currentColor" d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3" fill="currentColor"/><circle cx="18" cy="16" r="3" fill="currentColor"/></svg>
+    <svg viewBox="0 0 24 24" class="icon-mute" style="display:none"><path fill="currentColor" d="M3 10v4h4l5 5V5L7 10H3z"/><line x1="16" y1="9" x2="22" y2="15" stroke="currentColor" stroke-width="2"/><line x1="22" y1="9" x2="16" y2="15" stroke="currentColor" stroke-width="2"/></svg>
+  </button>
+</div>
+<audio id="bgm" loop preload="none">
+  <source src="music/wedding-song.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Side scroll nav -->
+<nav class="side-nav" aria-label="Section navigation">
+  <button data-target="hero" class="dot active"><span class="i18n" data-en="Cover" data-zh="封面"></span></button>
+  <button data-target="story" class="dot"><span class="i18n" data-en="Letter" data-zh="信笺"></span></button>
+  <button data-target="details" class="dot"><span class="i18n" data-en="Details" data-zh="行程"></span></button>
+  <button data-target="map" class="dot"><span class="i18n" data-en="Map" data-zh="地图"></span></button>
+  <button data-target="dress" class="dot"><span class="i18n" data-en="Dress Code" data-zh="着装"></span></button>
+  <button data-target="travel" class="dot"><span class="i18n" data-en="Travel" data-zh="旅程"></span></button>
+</nav>
+
+<!-- Toast for snitch easter egg -->
+<div id="toast" class="toast" aria-live="polite"></div>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section id="hero" class="section hero-section">
+    <div class="frame-card hero-card reveal">
+      <img src="1.jpg" alt="Catherine & Haolin wedding invitation cover, December 20th 2026, Hawaii" loading="eager" class="frame-img" data-lightbox="0">
+    </div>
+    <p class="tap-hint i18n" data-en="Tap the invitation to see it up close" data-zh="点击请柬查看高清细节"></p>
+
+    <div class="hero-copy reveal">
+      <p class="eyebrow i18n" data-en="Together with our families" data-zh="携手双方家庭"></p>
+      <h1 class="script-name">Catherine &amp; Haolin</h1>
+      <p class="hero-sub i18n" data-en="December 20th, 2026 · Oʻahu, Hawaiʻi" data-zh="2026年12月20日 · 夏威夷 · 瓦胡岛"></p>
+
+      <div class="countdown" id="countdown" aria-label="Countdown to the wedding">
+        <div class="cd-box"><span class="cd-num" id="cd-days">--</span><span class="cd-label i18n" data-en="Days" data-zh="天"></span></div>
+        <div class="cd-box"><span class="cd-num" id="cd-hours">--</span><span class="cd-label i18n" data-en="Hours" data-zh="小时"></span></div>
+        <div class="cd-box"><span class="cd-num" id="cd-mins">--</span><span class="cd-label i18n" data-en="Minutes" data-zh="分钟"></span></div>
+        <div class="cd-box"><span class="cd-num" id="cd-secs">--</span><span class="cd-label i18n" data-en="Seconds" data-zh="秒"></span></div>
+      </div>
+      <p class="cd-note i18n" data-en="until we say “I do” by the Pacific" data-zh="距离我们在太平洋边说出誓言"></p>
+
+      <button class="ghost-btn" id="calBtn">
+        <span class="i18n" data-en="Add to Calendar" data-zh="添加到日历"></span>
+      </button>
+    </div>
+
+    <div class="scroll-cue" aria-hidden="true">
+      <span class="i18n" data-en="Scroll" data-zh="向下滑动"></span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ============ STORY / LETTER ============ -->
+  <section id="story" class="section showcase">
+    <p class="eyebrow i18n" data-en="A Note From Us" data-zh="写给你的话"></p>
+    <h2 class="script-name small i18n" data-en="A Letter To You" data-zh="写给你的一封信"></h2>
+
+    <div class="frame-card showcase-img reveal">
+      <img src="5.jpg" alt="A heartfelt letter from Catherine and Haolin to their guests" loading="lazy" class="frame-img" data-lightbox="4">
+    </div>
+    <p class="tap-hint i18n" data-en="Tap to read every word up close" data-zh="点击可放大阅读全文"></p>
+
+    <details class="translation-toggle">
+      <summary class="i18n" data-en="Read the English / Chinese text" data-zh="查看中英文内容"></summary>
+      <div class="showcase-copy">
+        <p class="letter-heading i18n" data-en="“There is no greater gift than having those we love gathered together.”" data-zh="「世间最好的礼物，莫过于与所爱之人齐聚一堂。」"></p>
+        <p class="letter-p i18n" data-en="This is a special day in our lives, made all the more meaningful by the chance to share it with the family and friends we hold most dear." data-zh="这是我们生命中格外特别的一天，能与最珍视的家人和朋友一同分享，让这份意义更加深长。"></p>
+        <p class="letter-p i18n" data-en="Across different cities, shores, and chapters of our lives, we have all been following our own paths. And now, by love, good fortune, and perhaps a little magic, those paths are finally coming together by the sea, beneath the Hawaiian sky." data-zh="身处不同的城市、海岸与人生篇章，我们都曾各自前行。而如今，因为爱、因为缘分，或许还有一点点魔法，这些道路终于在夏威夷的天空下、海浪声中交汇。"></p>
+        <p class="letter-p i18n" data-en="We are truly grateful that you are traveling from near and far to be with us, and we look forward to celebrating together and creating new memories that we will treasure long after this day has passed." data-zh="无论你是从近处还是远方赶来，我们都由衷感激。期待与你共同庆祝，创造这些日后将被我们珍藏一生的回忆。"></p>
+        <p class="letter-sign script-name small i18n" data-en="Until we meet where the ocean meets the sky…" data-zh="愿我们在海天相接之处重逢…"></p>
+        <p class="letter-cl">C &amp; L</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ DETAILS / SCHEDULE ============ -->
+  <section id="details" class="section showcase">
+    <p class="eyebrow i18n" data-en="The Details" data-zh="婚礼行程"></p>
+    <h2 class="i18n" data-en="Lanikuhonua, O‘ahu" data-zh="拉尼库荷努瓦，瓦胡岛"></h2>
+
+    <div class="frame-card showcase-img reveal">
+      <img src="2.jpg" alt="Wedding details card: Catherine and Haolin, Sunday December 20th 2026, Lanikuhonua Oʻahu Hawaii, with full schedule" loading="lazy" class="frame-img" data-lightbox="1">
+    </div>
+    <p class="tap-hint i18n" data-en="Tap to zoom in on the full schedule" data-zh="点击查看完整行程细节"></p>
+
+    <div class="showcase-copy narrow">
+      <p class="tagline i18n" data-en="Lanikuhonua — “Where heaven meets the earth.”" data-zh="Lanikuhonua ——「天堂与人间相遇之处」"></p>
+      <ul class="timeline">
+        <li><span class="tl-time">3:30 <small>pm</small></span><span class="tl-label i18n" data-en="Guest Arrival" data-zh="宾客抵达"></span></li>
+        <li><span class="tl-time">4:30 <small>pm</small></span><span class="tl-label i18n" data-en="Oceanfront Lawn Ceremony" data-zh="海边草坪仪式"></span></li>
+        <li><span class="tl-time">5:30 <small>pm</small></span><span class="tl-label i18n" data-en="Cocktail Hour" data-zh="鸡尾酒会"></span></li>
+        <li><span class="tl-time">6:30 <small>pm</small></span><span class="tl-label i18n" data-en="Dinner Reception" data-zh="晚宴"></span></li>
+        <li><span class="tl-time">8:30 <small>pm</small></span><span class="tl-label i18n" data-en="After Party" data-zh="派对续摊"></span></li>
+      </ul>
+      <button class="ghost-btn" id="calBtn2">
+        <span class="i18n" data-en="Add to Calendar" data-zh="添加到日历"></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ MAP ============ -->
+  <section id="map" class="section showcase">
+    <p class="eyebrow i18n" data-en="Find Your Way" data-zh="婚礼地图"></p>
+    <h2 class="i18n" data-en="Wander the Grounds" data-zh="漫步婚礼现场"></h2>
+    <p class="tagline i18n" data-en="Tap the golden markers on the map for a peek at each spot." data-zh="点击地图上的金色标记，提前探索每一处场地。"></p>
+
+    <div class="frame-card showcase-img map-frame reveal">
+      <img src="3.jpg" alt="Illustrated wedding map of Lanikuhonua showing the ceremony, welcome area and reception" loading="lazy" class="frame-img" data-lightbox="2">
+      <button class="hotspot" style="left:44%; top:28%;" data-tip="ceremony" aria-label="Ceremony info"></button>
+      <button class="hotspot" style="left:80%; top:41%;" data-tip="welcome" aria-label="Welcome area info"></button>
+      <button class="hotspot" style="left:22%; top:60%;" data-tip="reception" aria-label="Reception info"></button>
+    </div>
+    <p class="tap-hint i18n" data-en="Tap the image itself to zoom in" data-zh="点击图片可放大查看"></p>
+
+    <div class="showcase-copy narrow">
+      <div class="tip-list">
+        <div class="tip-item" data-tip-for="ceremony">
+          <strong class="i18n" data-en="Ceremony" data-zh="仪式区"></strong>
+          <p class="i18n" data-en="Oceanfront lawn ceremony, begins at 4:30pm." data-zh="海景草坪仪式，4:30pm 开始。"></p>
+        </div>
+        <div class="tip-item" data-tip-for="welcome">
+          <strong class="i18n" data-en="Welcome Area" data-zh="迎宾区"></strong>
+          <p class="i18n" data-en="Sign the guestbook and grab a lei on your way in." data-zh="签到留言，别忘了戴上一个花环。"></p>
+        </div>
+        <div class="tip-item" data-tip-for="reception">
+          <strong class="i18n" data-en="Reception" data-zh="晚宴区"></strong>
+          <p class="i18n" data-en="Dinner, drinks and dancing under the string lights." data-zh="星光灯串下的晚宴、美酒与舞会。"></p>
+        </div>
+      </div>
+      <a class="ghost-btn" href="https://www.google.com/maps/search/?api=1&query=Lanikuhonua+Cultural+%26+Educational+Park+Oahu+Hawaii" target="_blank" rel="noopener">
+        <span class="i18n" data-en="Open in Google Maps" data-zh="在谷歌地图中打开"></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ DRESS CODE ============ -->
+  <section id="dress" class="section showcase">
+    <p class="eyebrow i18n" data-en="What to Wear" data-zh="着装要求"></p>
+    <h2 class="i18n" data-en="Dress Code" data-zh="着装要求"></h2>
+    <p class="tagline i18n" data-en="Formal · A celebration in timeless tones." data-zh="正式礼服 · 以永恒色调，庆祝这一刻。"></p>
+
+    <div class="frame-card showcase-img reveal mood-frame" id="dressFrame">
+      <img src="4.jpg" alt="Dress code guide: formal attire in white, ivory, light cream, champagne and soft gold" loading="lazy" class="frame-img" data-lightbox="3">
+    </div>
+    <p class="tap-hint i18n" data-en="Tap to see every outfit up close" data-zh="点击查看完整着装范例"></p>
+
+    <div class="showcase-copy narrow">
+      <p class="swatch-note i18n" data-en="Tap a color to see it glow on the invitation" data-zh="点击色块，看它在请柬上发光"></p>
+
+      <div class="swatches" id="swatchRow">
+        <button class="swatch active" style="background:#ffffff" data-color="#ffffff" data-en="White" data-zh="白色"></button>
+        <button class="swatch" style="background:#eee2c9" data-color="#eee2c9" data-en="Ivory" data-zh="象牙白"></button>
+        <button class="swatch" style="background:#e8dcc0" data-color="#e8dcc0" data-en="Light Cream" data-zh="浅奶油色"></button>
+        <button class="swatch" style="background:#dcc48f" data-color="#dcc48f" data-en="Champagne" data-zh="香槟色"></button>
+        <button class="swatch" style="background:#c9a15a" data-color="#c9a15a" data-en="Soft Gold" data-zh="柔金色"></button>
+      </div>
+      <p class="outfit-label" id="outfitLabel">White</p>
+
+      <p class="letter-p strong i18n" data-en="No other colors, no T-shirts, please." data-zh="请勿穿着其他颜色或T恤。"></p>
+      <p class="letter-p italic i18n" data-en="“He hauʻoli ka hui pū ʻana me ka ʻohana a me nā hoaʻloha.” — Joyful is the gathering with family and friends." data-zh="「He hauʻoli ka hui pū ʻana me ka ʻohana a me nā hoaʻloha.」—— 夏威夷语：与家人和朋友相聚，无比欢喜。"></p>
+    </div>
+  </section>
+
+  <!-- ============ TRAVEL / ALOHA ============ -->
+  <section id="travel" class="section showcase">
+    <p class="eyebrow i18n" data-en="Aloha, Travelers" data-zh="致远道而来的你"></p>
+    <h2 class="script-name small">Aloha</h2>
+    <p class="tagline i18n" data-en="Same stars, different shores — see you in Hawaiʻi." data-zh="同一片星空，不同的海岸——夏威夷见。"></p>
+
+    <div class="frame-card showcase-img travel-frame reveal">
+      <img src="6.jpg" alt="Illustrated Aloha travel map showing flight paths from China, US East Coast and US West Coast to Oʻahu, Hawaii" loading="lazy" class="frame-img" data-lightbox="5">
+    </div>
+    <p class="tap-hint i18n" data-en="Tap to explore the whole island chain" data-zh="点击查看完整海岛地图"></p>
+
+    <div class="showcase-copy narrow">
+      <div class="legend">
+        <div><span class="dot-legend"></span><span class="i18n" data-en="China" data-zh="中国"></span></div>
+        <div><span class="dot-legend"></span><span class="i18n" data-en="U.S. East Coast" data-zh="美国东海岸"></span></div>
+        <div><span class="dot-legend"></span><span class="i18n" data-en="U.S. West Coast" data-zh="美国西海岸"></span></div>
+        <div><span class="dot-legend star"></span><span class="i18n" data-en="O‘ahu, Hawai‘i" data-zh="瓦胡岛，夏威夷"></span></div>
+      </div>
+      <p class="letter-p i18n" data-en="However far you're coming from, thank you for making the journey to celebrate with us." data-zh="无论你从多远赶来，都万分感谢你为了这场庆典踏上旅程。"></p>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="paw-divider" aria-hidden="true">✦ ⋆ ✦</div>
+    <p class="script-name small i18n" data-en="Until we meet where the ocean meets the sky…" data-zh="愿我们在海天相接之处重逢…"></p>
+    <p class="letter-cl">C &amp; L</p>
+    <p class="footer-note i18n" data-en="Made with love (and a little magic) for our wedding day." data-zh="为我们的婚礼，用心（和一点点魔法）制作。"></p>
+    <button class="top-btn" id="toTop">
+      <span class="i18n" data-en="Back to top ↑" data-zh="回到顶部 ↑"></span>
+    </button>
+  </footer>
+
+</main>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+  <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+  <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous image">‹</button>
+  <img id="lbImg" src="" alt="">
+  <button class="lb-nav lb-next" id="lbNext" aria-label="Next image">›</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
