@@ -138,6 +138,28 @@
     }
   });
 
+  // WeChat's in-app browser (X5 / WKWebView) doesn't treat a normal click as a
+  // user gesture for audio the way Safari/Chrome do. WeChat fires this event
+  // once its own bridge is ready, and play() called from inside it is exempt
+  // from that restriction — this is the standard fix for "won't autoplay in WeChat".
+  document.addEventListener("WeixinJSBridgeReady", function () {
+    if (!playing) playMusic();
+  }, false);
+
+  // Extra safety net: if the envelope tap didn't manage to unlock audio
+  // (some WeChat versions are inconsistent), try again on the very next
+  // touch/click anywhere on the page, once, without bothering the user.
+  var unlockTried = false;
+  function unlockOnFirstInteraction() {
+    if (unlockTried || playing) return;
+    unlockTried = true;
+    playMusic();
+    document.removeEventListener("touchend", unlockOnFirstInteraction);
+    document.removeEventListener("click", unlockOnFirstInteraction);
+  }
+  document.addEventListener("touchend", unlockOnFirstInteraction);
+  document.addEventListener("click", unlockOnFirstInteraction);
+
   function updateMusicIcon() {
     musicBtn.querySelector(".icon-note").style.display = playing ? "none" : "block";
     musicBtn.querySelector(".icon-mute").style.display = playing ? "block" : "none";
