@@ -109,19 +109,28 @@
   var musicBtn = document.getElementById("musicToggle");
   var playing = false;
 
+  function playMusic(onFail) {
+    var p = bgm.play();
+    if (p && p.then) {
+      p.then(function () {
+        playing = true;
+        updateMusicIcon();
+      }).catch(function (err) {
+        if (onFail) onFail(err);
+      });
+    } else {
+      playing = true;
+      updateMusicIcon();
+    }
+  }
+
   musicBtn.addEventListener("click", function () {
     if (!playing) {
-      var p = bgm.play();
-      if (p && p.catch) {
-        p.then(function () {
-          playing = true;
-          updateMusicIcon();
-        }).catch(function () {
-          showToast(body.getAttribute("data-lang") === "zh"
-            ? "还没有添加音乐文件哦～把 mp3 放进 music 文件夹即可"
-            : "No music file yet — drop an mp3 into the /music folder");
-        });
-      }
+      playMusic(function () {
+        showToast(body.getAttribute("data-lang") === "zh"
+          ? "还没有添加音乐文件哦～把 mp3 放进 music 文件夹即可"
+          : "No music file yet — drop an mp3 into the /music folder");
+      });
     } else {
       bgm.pause();
       playing = false;
@@ -435,6 +444,7 @@
     envelopeBtn.addEventListener("click", function () {
       if (gateOpened) return;
       gateOpened = true;
+      playMusic();
 
       if (reduceMotion) {
         gate.classList.add("gate-exit");
