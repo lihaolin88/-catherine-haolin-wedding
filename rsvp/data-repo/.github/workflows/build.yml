@@ -1,0 +1,36 @@
+name: Build spreadsheet
+
+on:
+  push:
+    paths: [responses.json]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-spreadsheet
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install openpyxl
+      - run: python build.py
+      - name: Commit spreadsheet
+        run: |
+          git config user.name "rsvp-bot"
+          git config user.email "rsvp-bot@users.noreply.github.com"
+          git add responses.xlsx responses.csv
+          git diff --cached --quiet && exit 0
+          git commit -m "Update spreadsheet"
+          for i in 1 2 3 4 5; do
+            git pull --rebase && git push && exit 0
+            sleep 5
+          done
+          exit 1

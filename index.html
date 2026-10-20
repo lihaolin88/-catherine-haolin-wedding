@@ -110,6 +110,7 @@
   <button data-target="map" class="dot"><span class="i18n" data-en="Map" data-zh="地图"></span></button>
   <button data-target="dress" class="dot"><span class="i18n" data-en="Dress Code" data-zh="着装"></span></button>
   <button data-target="travel" class="dot"><span class="i18n" data-en="Travel" data-zh="旅程"></span></button>
+  <button data-target="rsvp" class="dot"><span class="i18n" data-en="RSVP" data-zh="问卷"></span></button>
 </nav>
 
 <!-- Toast for snitch easter egg -->
@@ -125,8 +126,7 @@
     <p class="tap-hint i18n" data-en="Tap the invitation to see it up close" data-zh="点击请柬查看高清细节"></p>
 
     <div class="hero-copy reveal">
-      <p class="eyebrow i18n" data-en="Together with our families" data-zh="携手双方家庭"></p>
-      <h1 class="script-name">Catherine &amp; Haolin</h1>
+      <h1 class="script-name small">Catherine &amp; Haolin</h1>
       <p class="hero-sub i18n" data-en="December 20th, 2026 · Oʻahu, Hawaiʻi" data-zh="2026年12月20日 · 夏威夷 · 瓦胡岛"></p>
 
       <div class="countdown" id="countdown" aria-label="Countdown to the wedding">
@@ -150,7 +150,6 @@
 
   <!-- ============ STORY / LETTER ============ -->
   <section id="story" class="section showcase">
-    <p class="eyebrow i18n" data-en="A Note From Us" data-zh="写给你的话"></p>
     <h2 class="script-name small i18n" data-en="A Letter To You" data-zh="写给你的一封信"></h2>
 
     <div class="frame-card showcase-img reveal">
@@ -173,8 +172,7 @@
 
   <!-- ============ DETAILS / SCHEDULE ============ -->
   <section id="details" class="section showcase">
-    <p class="eyebrow i18n" data-en="The Details" data-zh="婚礼行程"></p>
-    <h2 class="i18n" data-en="Lanikuhonua, O‘ahu" data-zh="拉尼库荷努瓦，瓦胡岛"></h2>
+    <h2 class="script-name small i18n" data-en="Location &amp; Timeline" data-zh="地点与流程"></h2>
 
     <div class="frame-card showcase-img reveal">
       <img src="2.jpg" alt="Wedding details card: Catherine and Haolin, Sunday December 20th 2026, Lanikuhonua Oʻahu Hawaii, with full schedule" loading="lazy" class="frame-img" data-lightbox="1">
@@ -183,13 +181,6 @@
 
     <div class="showcase-copy narrow">
       <p class="tagline i18n" data-en="Lanikuhonua — “Where heaven meets the earth.”" data-zh="Lanikuhonua ——「天堂与人间相遇之处」"></p>
-      <ul class="timeline">
-        <li><span class="tl-time">3:30 <small>pm</small></span><span class="tl-label i18n" data-en="Guest Arrival" data-zh="宾客抵达"></span></li>
-        <li><span class="tl-time">4:30 <small>pm</small></span><span class="tl-label i18n" data-en="Oceanfront Lawn Ceremony" data-zh="海边草坪仪式"></span></li>
-        <li><span class="tl-time">5:30 <small>pm</small></span><span class="tl-label i18n" data-en="Cocktail Hour" data-zh="鸡尾酒会"></span></li>
-        <li><span class="tl-time">6:30 <small>pm</small></span><span class="tl-label i18n" data-en="Dinner Reception" data-zh="晚宴"></span></li>
-        <li><span class="tl-time">8:30 <small>pm</small></span><span class="tl-label i18n" data-en="After Party" data-zh="派对续摊"></span></li>
-      </ul>
       <button class="ghost-btn" id="calBtn2">
         <span class="i18n" data-en="Add to Calendar" data-zh="添加到日历"></span>
       </button>
@@ -198,33 +189,12 @@
 
   <!-- ============ MAP ============ -->
   <section id="map" class="section showcase">
-    <p class="eyebrow i18n" data-en="Find Your Way" data-zh="婚礼地图"></p>
-    <h2 class="i18n" data-en="Wander the Grounds" data-zh="漫步婚礼现场"></h2>
-    <p class="tagline i18n" data-en="Tap the golden markers on the map for a peek at each spot." data-zh="点击地图上的金色标记，提前探索每一处场地。"></p>
-
     <div class="frame-card showcase-img map-frame reveal">
       <img src="3.jpg" alt="Illustrated wedding map of Lanikuhonua showing the ceremony, welcome area and reception" loading="lazy" class="frame-img" data-lightbox="2">
-      <button class="hotspot" style="left:44%; top:28%;" data-tip="ceremony" aria-label="Ceremony info"></button>
-      <button class="hotspot" style="left:80%; top:41%;" data-tip="welcome" aria-label="Welcome area info"></button>
-      <button class="hotspot" style="left:22%; top:60%;" data-tip="reception" aria-label="Reception info"></button>
     </div>
     <p class="tap-hint i18n" data-en="Tap the image itself to zoom in" data-zh="点击图片可放大查看"></p>
 
     <div class="showcase-copy narrow">
-      <div class="tip-list">
-        <div class="tip-item" data-tip-for="ceremony">
-          <strong class="i18n" data-en="Ceremony" data-zh="仪式区"></strong>
-          <p class="i18n" data-en="Oceanfront lawn ceremony, begins at 4:30pm." data-zh="海景草坪仪式，4:30pm 开始。"></p>
-        </div>
-        <div class="tip-item" data-tip-for="welcome">
-          <strong class="i18n" data-en="Welcome Area" data-zh="迎宾区"></strong>
-          <p class="i18n" data-en="Sign the guestbook and grab a lei on your way in." data-zh="签到留言，别忘了戴上一个花环。"></p>
-        </div>
-        <div class="tip-item" data-tip-for="reception">
-          <strong class="i18n" data-en="Reception" data-zh="晚宴区"></strong>
-          <p class="i18n" data-en="Dinner, drinks and dancing under the string lights." data-zh="星光灯串下的晚宴、美酒与舞会。"></p>
-        </div>
-      </div>
       <a class="ghost-btn" href="https://www.google.com/maps/search/?api=1&query=Lanikuhonua+Cultural+%26+Educational+Park+Oahu+Hawaii" target="_blank" rel="noopener">
         <span class="i18n" data-en="Open in Google Maps" data-zh="在谷歌地图中打开"></span>
       </a>
@@ -233,9 +203,8 @@
 
   <!-- ============ DRESS CODE ============ -->
   <section id="dress" class="section showcase">
-    <p class="eyebrow i18n" data-en="What to Wear" data-zh="着装要求"></p>
-    <h2 class="i18n" data-en="Dress Code" data-zh="着装要求"></h2>
-    <p class="tagline i18n" data-en="Formal · A celebration in timeless tones." data-zh="正式礼服 · 以永恒色调，庆祝这一刻。"></p>
+    <h2 class="script-name small i18n" data-en="Dress Code" data-zh="着装要求"></h2>
+    <p class="tagline i18n" data-en="A celebration in timeless tones." data-zh="以永恒色调，庆祝这一刻。"></p>
 
     <div class="frame-card showcase-img reveal mood-frame" id="dressFrame">
       <img src="4.jpg" alt="Dress code guide: formal attire in white, ivory, light cream, champagne and soft gold" loading="lazy" class="frame-img" data-lightbox="3">
@@ -261,8 +230,7 @@
 
   <!-- ============ TRAVEL / ALOHA ============ -->
   <section id="travel" class="section showcase">
-    <p class="eyebrow i18n" data-en="Aloha, Travelers" data-zh="致远道而来的你"></p>
-    <h2 class="script-name small">Aloha</h2>
+    <h2 class="script-name small i18n" data-en="Welcome to Hawaii" data-zh="欢迎来到夏威夷"></h2>
     <p class="tagline i18n" data-en="Same stars, different shores — see you in Hawaiʻi." data-zh="同一片星空，不同的海岸——夏威夷见。"></p>
 
     <div class="frame-card showcase-img travel-frame reveal">
@@ -271,21 +239,94 @@
     <p class="tap-hint i18n" data-en="Tap to explore the whole island chain" data-zh="点击查看完整海岛地图"></p>
 
     <div class="showcase-copy narrow">
-      <div class="legend">
-        <div><span class="dot-legend"></span><span class="i18n" data-en="China" data-zh="中国"></span></div>
-        <div><span class="dot-legend"></span><span class="i18n" data-en="U.S. East Coast" data-zh="美国东海岸"></span></div>
-        <div><span class="dot-legend"></span><span class="i18n" data-en="U.S. West Coast" data-zh="美国西海岸"></span></div>
-        <div><span class="dot-legend star"></span><span class="i18n" data-en="O‘ahu, Hawai‘i" data-zh="瓦胡岛，夏威夷"></span></div>
-      </div>
       <p class="letter-p i18n" data-en="However far you're coming from, thank you for making the journey to celebrate with us." data-zh="无论你从多远赶来，都万分感谢你为了这场庆典踏上旅程。"></p>
+    </div>
+  </section>
+
+  <!-- ============ RSVP / QUESTIONNAIRE ============ -->
+  <section id="rsvp" class="section showcase">
+    <h2 class="script-name small i18n" data-en="RSVP" data-zh="宾客问卷"></h2>
+    <p class="tagline i18n" data-en="Help us prepare the perfect day for you." data-zh="帮我们为你准备最好的一天。"></p>
+
+    <form class="rsvp-card reveal" id="rsvpForm" novalidate>
+      <fieldset class="rsvp-group">
+        <legend class="i18n" data-en="About You" data-zh="关于你"></legend>
+        <label class="rsvp-field">
+          <span class="rsvp-q i18n" data-en="Your name" data-zh="你的名字"></span>
+          <input type="text" name="name" required maxlength="80" autocomplete="name">
+        </label>
+      </fieldset>
+
+      <fieldset class="rsvp-group">
+        <legend class="i18n" data-en="Travel" data-zh="行程"></legend>
+        <label class="rsvp-field">
+          <span class="rsvp-q i18n" data-en="When do you expect to arrive in Hawaii?" data-zh="预计到达夏威夷的时间"></span>
+          <input type="date" name="arrival" min="2026-11-01" max="2026-12-31">
+        </label>
+      </fieldset>
+
+      <fieldset class="rsvp-group">
+        <legend class="i18n" data-en="Dinner" data-zh="晚宴"></legend>
+
+        <div class="rsvp-field">
+          <span class="rsvp-q i18n" data-en="First course" data-zh="头盘"></span>
+          <div class="rsvp-choices">
+            <label class="rsvp-choice"><input type="radio" name="firstCourse" value="Roasted Beet Salad" required><span class="i18n" data-en="Roasted Beet Salad" data-zh="烤甜菜沙拉 Roasted Beet Salad"></span></label>
+            <label class="rsvp-choice"><input type="radio" name="firstCourse" value="Local Green Salad with Yuzu Honey"><span class="i18n" data-en="Local Green Salad with Yuzu Honey" data-zh="本地蔬菜沙拉配柚子蜂蜜 Local Green Salad with Yuzu Honey"></span></label>
+          </div>
+        </div>
+
+        <div class="rsvp-field">
+          <span class="rsvp-q i18n" data-en="Main course" data-zh="主菜"></span>
+          <div class="rsvp-choices">
+            <label class="rsvp-choice"><input type="radio" name="mainCourse" value="Mahi with Lilikoi Beurre Blanc" required><span class="i18n" data-en="Mahi with Lilikoi Beurre Blanc" data-zh="鬼头刀鱼配百香果黄油酱 Mahi with Lilikoi Beurre Blanc"></span></label>
+            <label class="rsvp-choice"><input type="radio" name="mainCourse" value="6-Hour Braised Beef"><span class="i18n" data-en="6-Hour Braised Beef" data-zh="六小时慢炖牛肉 6-Hour Braised Beef"></span></label>
+          </div>
+        </div>
+
+        <label class="rsvp-field">
+          <span class="rsvp-q i18n" data-en="Any allergies?" data-zh="有任何过敏吗？"></span>
+          <input type="text" name="allergies" maxlength="300" class="i18n-ph" data-ph-en="e.g. peanuts, shellfish — or none" data-ph-zh="例如：花生、海鲜 —— 没有可留空">
+        </label>
+
+        <label class="rsvp-field">
+          <span class="rsvp-q i18n" data-en="Any favorite type of alcohol or wine?" data-zh="有喜欢的酒类或葡萄酒吗？"></span>
+          <input type="text" name="drinks" maxlength="300" class="i18n-ph" data-ph-en="e.g. champagne, red wine, whisky, non-alcoholic" data-ph-zh="例如：香槟、红酒、威士忌、不喝酒">
+        </label>
+      </fieldset>
+
+      <fieldset class="rsvp-group">
+        <legend class="i18n" data-en="Anything Else" data-zh="其他"></legend>
+        <label class="rsvp-field">
+          <span class="rsvp-q i18n" data-en="Is there anything we should prepare for or know in advance?" data-zh="有什么需要我们提前准备或了解的吗？"></span>
+          <textarea name="notes" rows="3" maxlength="1000"></textarea>
+        </label>
+        <label class="rsvp-field">
+          <span class="rsvp-q i18n" data-en="Leave us your blessings" data-zh="留下你的祝福吧"></span>
+          <textarea name="wishes" rows="4" maxlength="2000"></textarea>
+        </label>
+      </fieldset>
+
+      <p class="rsvp-error" id="rsvpError" role="alert"></p>
+      <button type="submit" class="ghost-btn rsvp-submit" id="rsvpSubmit">
+        <span class="i18n" data-en="Send" data-zh="提交"></span>
+      </button>
+    </form>
+
+    <div class="rsvp-card rsvp-thanks" id="rsvpThanks" hidden>
+      <p class="script-name small i18n" data-en="Mahalo!" data-zh="谢谢你！"></p>
+      <p class="letter-p i18n" data-en="We've received your answers. See you in Hawaiʻi." data-zh="我们已收到你的回复，夏威夷见。"></p>
+      <button type="button" class="top-btn" id="rsvpAgain">
+        <span class="i18n" data-en="Submit another response" data-zh="再填写一份"></span>
+      </button>
     </div>
   </section>
 
   <!-- ============ FOOTER ============ -->
   <footer class="footer">
     <div class="paw-divider" aria-hidden="true">✦ ⋆ ✦</div>
-    <p class="script-name small i18n" data-en="Until we meet where the ocean meets the sky…" data-zh="愿我们在海天相接之处重逢…"></p>
-    <p class="letter-cl">C &amp; L</p>
+    <p class="script-name small i18n" data-en="Until we meet where Heaven meets the earth" data-zh="愿我们在天堂与人间相遇之处重逢"></p>
+    <p class="footer-names">Catherine &amp; Haolin</p>
     <p class="footer-note i18n" data-en="Made with love (and a little magic) for our wedding day." data-zh="为我们的婚礼，用心（和一点点魔法）制作。"></p>
     <button class="top-btn" id="toTop">
       <span class="i18n" data-en="Back to top ↑" data-zh="回到顶部 ↑"></span>

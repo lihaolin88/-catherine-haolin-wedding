@@ -1,0 +1,11 @@
+name = "wedding-rsvp"
+main = "worker.js"
+compatibility_date = "2026-10-01"
+
+[vars]
+DATA_REPO = "lihaolin88/wedding-rsvp"
+ALLOWED_ORIGIN = "https://lihaolin88.github.io"
+
+# Secrets — set once with:
+#   npx wrangler secret put GITHUB_TOKEN   (fine-grained token, Contents: read & write on DATA_REPO only)
+#   npx wrangler secret put ADMIN_KEY      (long random string; it's the password in your viewing link)

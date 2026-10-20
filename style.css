@@ -225,6 +225,9 @@ body.gate-active .snitch { visibility: hidden; pointer-events: none; }
   gap: 26px;
   padding-top: 60px;
 }
+/* keep the hero content clear of the absolutely-positioned scroll cue
+   (beats the .section padding overrides in the media queries below) */
+.section.hero-section { padding-bottom: 120px; }
 
 .showcase {
   display: flex;
@@ -433,57 +436,6 @@ body.gate-active .snitch { visibility: hidden; pointer-events: none; }
 
 .tagline { font-style: italic; color: var(--gold-deep); margin-bottom: 22px; }
 
-/* ---------- timeline ---------- */
-.timeline { list-style: none; padding: 0; margin: 0 0 28px; border-left: 2px solid var(--gold-light); }
-.timeline li {
-  position: relative;
-  padding: 4px 0 22px 26px;
-  display: flex;
-  gap: 14px;
-  align-items: baseline;
-}
-.timeline li::before {
-  content: "";
-  position: absolute;
-  left: -6px;
-  top: 8px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 0 4px var(--cream);
-}
-.tl-time { font-family: var(--display); color: var(--gold-deep); min-width: 78px; font-size: 18px; }
-.tl-time small { font-size: 12px; }
-.tl-label { font-size: 18px; }
-
-/* ---------- map hotspots ---------- */
-.hotspot {
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--gold);
-  border: 3px solid var(--white);
-  box-shadow: 0 0 0 0 rgba(163,130,58,.6);
-  cursor: pointer;
-  transform: translate(-50%, -50%);
-  animation: pulse 2.2s infinite;
-}
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(163,130,58,.55); }
-  70% { box-shadow: 0 0 0 14px rgba(163,130,58,0); }
-  100% { box-shadow: 0 0 0 0 rgba(163,130,58,0); }
-}
-.tip-list { margin-bottom: 24px; }
-.tip-item {
-  padding: 12px 0;
-  border-bottom: 1px dashed var(--gold-light);
-  transition: opacity .2s ease;
-}
-.tip-item p { margin: 4px 0 0; font-size: 16px; }
-.tip-item.highlight strong { color: var(--gold); }
-
 /* ---------- dress code swatches ---------- */
 .swatches { display: flex; gap: 14px; margin: 18px 0 6px; flex-wrap: wrap; }
 .swatch {
@@ -519,12 +471,82 @@ body.gate-active .snitch { visibility: hidden; pointer-events: none; }
   transition: opacity .2s ease;
 }
 
-/* ---------- travel legend ---------- */
-.legend { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
-.legend > div { display: flex; align-items: center; gap: 10px; font-size: 16px; }
-.dot-legend { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); display: inline-block; }
-.dot-legend.star { background: none; }
-.dot-legend.star::before { content: "✦"; color: var(--gold-deep); }
+/* ---------- rsvp questionnaire ---------- */
+.rsvp-card {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  background: var(--white);
+  border: 1px solid var(--gold-light);
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+  padding: 34px clamp(20px, 5vw, 44px) 30px;
+  text-align: left;
+}
+.rsvp-card::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid var(--gold-light);
+  pointer-events: none;
+}
+.rsvp-group { border: none; margin: 0 0 22px; padding: 0; min-width: 0; }
+.rsvp-group legend {
+  font-family: var(--display);
+  font-size: 15px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding: 0;
+  margin-bottom: 12px;
+  width: 100%;
+  border-bottom: 1px solid var(--cream-dark);
+  padding-bottom: 6px;
+}
+.rsvp-field { display: block; margin-bottom: 18px; }
+.rsvp-q { display: block; font-size: 17px; color: var(--gold-deep); margin-bottom: 6px; }
+.rsvp-field input[type="text"],
+.rsvp-field input[type="date"],
+.rsvp-field textarea {
+  width: 100%;
+  font-family: var(--serif);
+  font-size: 17px;
+  color: var(--ink);
+  background: var(--cream);
+  border: 1px solid var(--gold-light);
+  border-radius: 4px;
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+  -webkit-appearance: none;
+  appearance: none;
+  min-height: 46px;
+}
+.rsvp-field textarea { resize: vertical; line-height: 1.5; }
+.rsvp-field input:focus,
+.rsvp-field textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(163,130,58,.18); }
+.rsvp-field.invalid input,
+.rsvp-field.invalid .rsvp-choices { border-color: #b4573c; box-shadow: 0 0 0 3px rgba(180,87,60,.14); }
+.rsvp-choices { display: flex; flex-direction: column; gap: 8px; border-radius: 6px; }
+.rsvp-choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--gold-light);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 17px;
+  transition: background .2s ease, border-color .2s ease;
+}
+.rsvp-choice:hover { background: var(--cream); }
+.rsvp-choice input { accent-color: var(--gold); width: 17px; height: 17px; margin: 0; flex: none; }
+.rsvp-choice:has(input:checked) { background: var(--cream); border-color: var(--gold); }
+.rsvp-error { color: #b4573c; font-size: 15px; min-height: 1.2em; margin: 0 0 10px; text-align: center; }
+.rsvp-submit { display: block; margin: 0 auto; min-width: 160px; }
+.rsvp-submit:disabled { opacity: .55; cursor: wait; transform: none; }
+.rsvp-thanks { text-align: center; }
+.rsvp-thanks .script-name { margin-bottom: 12px; }
 
 /* ---------- footer ---------- */
 .footer {
@@ -532,6 +554,13 @@ body.gate-active .snitch { visibility: hidden; pointer-events: none; }
   z-index: 2;
   text-align: center;
   padding: 70px 8vw 60px;
+}
+.footer-names {
+  font-family: var(--display);
+  font-size: 20px;
+  letter-spacing: .08em;
+  color: var(--gold);
+  margin: 6px 0 0;
 }
 .paw-divider { color: var(--gold-light); letter-spacing: 12px; margin-bottom: 18px; }
 .footer-note { font-size: 15px; color: var(--gold); margin: 10px 0 26px; }
@@ -599,7 +628,7 @@ body.gate-active .snitch { visibility: hidden; pointer-events: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .snitch, .wing, .scroll-line, .hotspot { animation: none !important; }
+  .snitch, .wing, .scroll-line { animation: none !important; }
   .reveal { transition: none; opacity: 1; transform: none; }
   .env-svg, .env-wand { transition: none; }
   html { scroll-behavior: auto; }

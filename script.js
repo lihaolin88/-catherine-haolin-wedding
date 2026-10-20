@@ -14,6 +14,10 @@
       var text = el.getAttribute("data-" + lang);
       if (text !== null) el.textContent = text;
     });
+    document.querySelectorAll(".i18n-ph").forEach(function (el) {
+      var ph = el.getAttribute("data-ph-" + lang);
+      if (ph !== null) el.setAttribute("placeholder", ph);
+    });
     document.querySelectorAll(".lang-en").forEach(function (el) {
       el.style.display = lang === "zh" ? "none" : "inline";
     });
@@ -366,21 +370,6 @@
     sections.forEach(function (s) { if (s) navObserver.observe(s); });
   }
 
-  /* ================= map hotspot tooltips ================= */
-  var hotspots = document.querySelectorAll(".hotspot");
-  var tipItems = document.querySelectorAll(".tip-item");
-  hotspots.forEach(function (spot) {
-    spot.addEventListener("click", function () {
-      var key = spot.getAttribute("data-tip");
-      var target = document.querySelector('.tip-item[data-tip-for="' + key + '"]');
-      tipItems.forEach(function (t) { t.classList.remove("highlight"); });
-      if (target) {
-        target.classList.add("highlight");
-        target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" });
-      }
-    });
-  });
-
   /* ================= dress code mood glow ================= */
   var dressFrame = document.getElementById("dressFrame");
   var outfitLabel = document.getElementById("outfitLabel");
@@ -452,6 +441,79 @@
     if (e.key === "ArrowLeft") showRelative(-1);
     if (e.key === "ArrowRight") showRelative(1);
   });
+
+  /* ================= rsvp questionnaire ================= */
+  // Where submissions are POSTed. On localhost this is the dev server in
+  // rsvp/dev_server.py; for the live site, set it to the deployed backend URL.
+  var IS_LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  var RSVP_ENDPOINT = IS_LOCAL ? "/api/rsvp" : "https://wedding-rsvp.catherine-haolin.workers.dev/rsvp";
+
+  var rsvpForm = document.getElementById("rsvpForm");
+  var rsvpThanks = document.getElementById("rsvpThanks");
+  var rsvpError = document.getElementById("rsvpError");
+  var rsvpSubmit = document.getElementById("rsvpSubmit");
+
+  function t(en, zh) { return body.getAttribute("data-lang") === "zh" ? zh : en; }
+
+  function rsvpField(name) {
+    var el = rsvpForm.elements[name];
+    return el && el.length && !el.tagName ? el[0].closest(".rsvp-field") : el.closest(".rsvp-field");
+  }
+
+  if (rsvpForm) {
+    rsvpForm.addEventListener("input", function (e) {
+      var field = e.target.closest(".rsvp-field");
+      if (field) field.classList.remove("invalid");
+      rsvpError.textContent = "";
+    });
+
+    rsvpForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var data = {};
+      ["name", "arrival", "firstCourse", "mainCourse", "allergies", "drinks", "notes", "wishes"].forEach(function (k) {
+        data[k] = (rsvpForm.elements[k].value || "").trim();
+      });
+      data.lang = body.getAttribute("data-lang");
+
+      var missing = ["name", "firstCourse", "mainCourse"].filter(function (k) { return !data[k]; });
+      missing.forEach(function (k) { rsvpField(k).classList.add("invalid"); });
+      if (missing.length) {
+        rsvpError.textContent = t("Please fill in your name and choose both courses.", "请填写名字，并选择头盘和主菜。");
+        rsvpField(missing[0]).scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+        return;
+      }
+      if (!RSVP_ENDPOINT) {
+        rsvpError.textContent = t("The questionnaire isn't open yet — please check back soon.", "问卷尚未开放，请稍后再试。");
+        return;
+      }
+
+      rsvpSubmit.disabled = true;
+      // text/plain keeps this a "simple" request, so no CORS preflight is needed.
+      fetch(RSVP_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(data)
+      }).then(function (res) {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        rsvpForm.hidden = true;
+        rsvpThanks.hidden = false;
+        rsvpThanks.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+        var r = rsvpThanks.getBoundingClientRect();
+        burstConfetti(r.left + r.width / 2, r.top + 40);
+      }).catch(function () {
+        rsvpError.textContent = t("Something went wrong sending your answers. Please try again.", "提交失败了，请稍后再试一次。");
+      }).then(function () {
+        rsvpSubmit.disabled = false;
+      });
+    });
+
+    document.getElementById("rsvpAgain").addEventListener("click", function () {
+      rsvpForm.reset();
+      rsvpThanks.hidden = true;
+      rsvpForm.hidden = false;
+      rsvpForm.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    });
+  }
 
   /* ================= back to top ================= */
   document.getElementById("toTop").addEventListener("click", function () {

@@ -1,23 +1,20 @@
 # Catherine & Haolin — Wedding Website
 
 A one-page, bilingual (EN / 中文) wedding invitation site built from the six
-invitation illustrations, with a countdown, an interactive map, a
-click-to-catch golden snitch, an add-to-calendar button, and a full-screen
+invitation illustrations, with a countdown, a click-to-catch golden snitch,
+an add-to-calendar button, a guest questionnaire (RSVP), and a full-screen
 photo viewer.
 
 ## Preview locally
 
-Just open `index.html` in a browser — no build step, no dependencies.
-(Serving it through a local server avoids any browser file:// quirks:)
-
 ```bash
-# Python
-python -m http.server 8000
-# or Node
-npx serve .
+pip install openpyxl
+python rsvp/dev_server.py
 ```
 
-Then visit `http://localhost:8000`.
+Then visit `http://localhost:8000`. The dev server also accepts questionnaire
+submissions and writes them to `rsvp/.local/responses.xlsx` (git-ignored, so
+test answers never get published).
 
 ## Deploy to GitHub Pages
 
@@ -43,20 +40,20 @@ Then visit `http://localhost:8000`.
 - **Background music** — see `music/README.md`.
 - **Text / translations** — every bilingual string in `index.html` lives on
   one element as `data-en="..." data-zh="..."`; edit both.
-- **Map hotspot positions** — the three `<button class="hotspot">` elements
-  in the Map section use `left`/`top` percentages; nudge them if you want the
-  markers to sit exactly on the illustration's labels.
-- **RSVP** — not wired up yet. If you want a real RSVP form later, the
-  easiest no-backend option is [Formspree](https://formspree.io) (free tier):
-  create a form there, then add a `<form action="https://formspree.io/f/xxxx"
-  method="POST">` block with your fields to the page.
+- **RSVP backend** — `RSVP_ENDPOINT` in `script.js`. On localhost it points
+  at the dev server; on the live site it points at the Cloudflare Worker in
+  `rsvp/worker/` (redeploy with `npx wrangler deploy` from that folder).
+  The Worker stores responses in the private repo `lihaolin88/wedding-rsvp`
+  (template in `rsvp/data-repo/`), whose GitHub Action rebuilds the Excel file.
+  Responses can be viewed at `https://wedding-rsvp.catherine-haolin.workers.dev/admin?key=<ADMIN_KEY>`.
 
 ## Files
 
 ```
 index.html   structure & bilingual copy
 style.css    theme, layout, animations
-script.js    countdown, i18n, lightbox, map hotspots, snitch, particles
+script.js    countdown, i18n, lightbox, RSVP form, snitch, particles
+rsvp/        Excel export (xlsx.py) and local dev server (dev_server.py)
 1.jpg..6.jpg the six invitation illustrations
 music/       drop an mp3 here for the background music toggle
 ```
