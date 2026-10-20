@@ -22,8 +22,9 @@ export default {
     const url = new URL(req.url);
     try {
       if (url.pathname === "/rsvp") {
-        if (req.method === "OPTIONS") return withCors(new Response(null, { status: 204 }), env);
-        if (req.method === "POST") return withCors(await submit(req, env), env);
+        const origin = req.headers.get("Origin");
+        if (req.method === "OPTIONS") return withCors(new Response(null, { status: 204 }), env, origin);
+        if (req.method === "POST") return withCors(await submit(req, env), env, origin);
       }
       if (url.pathname.startsWith("/admin")) {
         if (!env.ADMIN_KEY || url.searchParams.get("key") !== env.ADMIN_KEY) {
@@ -36,7 +37,7 @@ export default {
       return new Response("Not found", { status: 404 });
     } catch (err) {
       console.error(err);
-      return withCors(json({ ok: false, error: "server_error" }, 500), env);
+      return withCors(json({ ok: false, error: "server_error" }, 500), env, req.headers.get("Origin"));
     }
   },
 };
@@ -268,9 +269,13 @@ function nameKey(name) {
   return String(name || "").normalize("NFKC").replace(/\s+/g, " ").trim().toLowerCase();
 }
 
-function withCors(res, env) {
+function withCors(res, env, requestOrigin) {
   const h = new Headers(res.headers);
-  h.set("Access-Control-Allow-Origin", env.ALLOWED_ORIGIN || "*");
+  // ALLOWED_ORIGIN is a comma-separated list; echo back whichever one matches.
+  const allowed = (env.ALLOWED_ORIGIN || "*").split(",").map((o) => o.trim());
+  const origin = requestOrigin || "";
+  h.set("Access-Control-Allow-Origin", allowed.includes("*") || allowed.includes(origin) ? origin || "*" : allowed[0]);
+  h.set("Vary", "Origin");
   h.set("Access-Control-Allow-Methods", "POST, OPTIONS");
   h.set("Access-Control-Allow-Headers", "Content-Type");
   return new Response(res.body, { status: res.status, headers: h });

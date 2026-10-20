@@ -45,7 +45,8 @@ test answers never get published).
   `rsvp/worker/` (redeploy with `npx wrangler deploy` from that folder).
   The Worker stores responses in the private repo `lihaolin88/wedding-rsvp`
   (template in `rsvp/data-repo/`), whose GitHub Action rebuilds the Excel file.
-  Responses can be viewed at `https://wedding-rsvp.catherine-haolin.workers.dev/admin?key=<ADMIN_KEY>`.
+  Responses can be viewed at `https://rsvp.catherinehaolin.com/admin?key=<ADMIN_KEY>`
+  (the Worker also answers on `wedding-rsvp.catherine-haolin.workers.dev`, used as a fallback).
 
 ## Releasing a change (cache busting)
 

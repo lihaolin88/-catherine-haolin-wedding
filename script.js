@@ -6,7 +6,7 @@
   // BUILD must match data-build on <html>. If this page is out of date, either
   // because this script is newer than the HTML or because the server has a newer
   // HTML, reload once with ?v=<build> so the browser fetches everything fresh.
-  var BUILD = "20261020d";
+  var BUILD = "20261020e";
   (function checkForNewerBuild() {
     var pageBuild = document.documentElement.getAttribute("data-build") || "";
     function reloadFor(build) {
@@ -473,10 +473,35 @@
   });
 
   /* ================= rsvp questionnaire ================= */
-  // Where submissions are POSTed. On localhost this is the dev server in
-  // rsvp/dev_server.py; for the live site, set it to the deployed backend URL.
+  // Where submissions are POSTed, tried in order. On localhost this is the dev
+  // server in rsvp/dev_server.py. Live, our own domain comes first because
+  // workers.dev is often blocked in mainland China; workers.dev is the fallback.
   var IS_LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
-  var RSVP_ENDPOINT = IS_LOCAL ? "/api/rsvp" : "https://wedding-rsvp.catherine-haolin.workers.dev/rsvp";
+  var RSVP_ENDPOINTS = IS_LOCAL ? ["/api/rsvp"] : [
+    "https://rsvp.catherinehaolin.com/rsvp",
+    "https://wedding-rsvp.catherine-haolin.workers.dev/rsvp"
+  ];
+
+  // Network failures and timeouts move on to the next endpoint; an HTTP error
+  // response means the server was reached, so it's reported as-is.
+  function postRsvp(data, i) {
+    i = i || 0;
+    var ctrl = window.AbortController ? new AbortController() : null;
+    var timer = ctrl && setTimeout(function () { ctrl.abort(); }, 12000);
+    return fetch(RSVP_ENDPOINTS[i], {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(data),
+      signal: ctrl ? ctrl.signal : undefined
+    }).then(function (res) {
+      clearTimeout(timer);
+      return res;
+    }, function (err) {
+      clearTimeout(timer);
+      if (i + 1 < RSVP_ENDPOINTS.length) return postRsvp(data, i + 1);
+      throw err;
+    });
+  }
 
   var rsvpForm = document.getElementById("rsvpForm");
   var rsvpThanks = document.getElementById("rsvpThanks");
@@ -512,18 +537,10 @@
         rsvpField(missing[0]).scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
         return;
       }
-      if (!RSVP_ENDPOINT) {
-        rsvpError.textContent = t("The questionnaire isn't open yet — please check back soon.", "问卷尚未开放，请稍后再试。");
-        return;
-      }
 
       rsvpSubmit.disabled = true;
       // text/plain keeps this a "simple" request, so no CORS preflight is needed.
-      fetch(RSVP_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(data)
-      }).then(function (res) {
+      postRsvp(data).then(function (res) {
         if (!res.ok) throw new Error("HTTP " + res.status);
         return res.json();
       }).then(function (result) {

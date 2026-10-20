@@ -2,9 +2,14 @@ name = "wedding-rsvp"
 main = "worker.js"
 compatibility_date = "2026-10-01"
 
+# Own domain: workers.dev is often blocked in mainland China.
+# workers.dev stays enabled as a fallback (script.js tries it if this fails).
+routes = [{ pattern = "rsvp.catherinehaolin.com", custom_domain = true }]
+workers_dev = true
+
 [vars]
 DATA_REPO = "lihaolin88/wedding-rsvp"
-ALLOWED_ORIGIN = "https://lihaolin88.github.io"
+ALLOWED_ORIGIN = "https://catherinehaolin.com,https://www.catherinehaolin.com,https://lihaolin88.github.io"
 
 # Secrets — set once with:
 #   npx wrangler secret put GITHUB_TOKEN   (fine-grained token, Contents: read & write on DATA_REPO only)
