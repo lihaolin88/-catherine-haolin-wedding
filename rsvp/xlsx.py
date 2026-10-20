@@ -19,6 +19,7 @@ COLUMNS = [
     ("submittedAt", "Last Updated (UTC)", 20),
     ("firstSubmittedAt", "First Submitted (UTC)", 20),
     ("lang", "Lang", 6),
+    ("source", "Source", 10),  # "wechat" = pasted in from a WeChat message
 ]
 
 COURSES = (("firstCourse", "First Course"), ("mainCourse", "Main Course"))

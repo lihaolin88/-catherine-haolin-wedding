@@ -6,7 +6,7 @@
   // BUILD must match data-build on <html>. If this page is out of date, either
   // because this script is newer than the HTML or because the server has a newer
   // HTML, reload once with ?v=<build> so the browser fetches everything fresh.
-  var BUILD = "20261020e";
+  var BUILD = "20261020f";
   (function checkForNewerBuild() {
     var pageBuild = document.documentElement.getAttribute("data-build") || "";
     function reloadFor(build) {
@@ -560,13 +560,65 @@
         burstConfetti(r.left + r.width / 2, r.top + 40);
       }).catch(function () {
         rsvpError.textContent = t("Something went wrong sending your answers. Please try again.", "提交失败了，请稍后再试一次。");
+        showCopyFallback(data);
       }).then(function () {
         rsvpSubmit.disabled = false;
       });
     });
 
+    // ---- fallback: copy the answers so they can be sent over WeChat ----
+    // The text is readable, and its last line carries the same answers encoded
+    // so the admin page's "paste to add" can restore them exactly.
+    var COPY_LABELS = [
+      ["name", "名字 Name"], ["firstCourse", "头盘 First course"], ["mainCourse", "主菜 Main course"],
+      ["arrival", "抵达夏威夷 Arrival"], ["allergies", "过敏 Allergies"], ["drinks", "酒水 Drinks"],
+      ["notes", "注意事项 Notes"], ["wishes", "祝福 Blessings"]
+    ];
+    var rsvpFallback = document.getElementById("rsvpFallback");
+    var rsvpCopyText = document.getElementById("rsvpCopyText");
+    var rsvpCopied = document.getElementById("rsvpCopied");
+
+    function answersAsText(data) {
+      var lines = ["【Catherine & Haolin 婚礼问卷 RSVP】"];
+      COPY_LABELS.forEach(function (pair) {
+        if (data[pair[0]]) lines.push(pair[1] + ": " + data[pair[0]]);
+      });
+      var code = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+      lines.push("RSVP-DATA:" + code);
+      return lines.join("\n");
+    }
+
+    function showCopyFallback(data) {
+      rsvpCopyText.value = answersAsText(data);
+      rsvpCopied.textContent = "";
+      rsvpFallback.hidden = false;
+    }
+
+    document.getElementById("rsvpCopy").addEventListener("click", function () {
+      function done(ok) {
+        rsvpCopied.textContent = ok
+          ? t("Copied! Paste it into a WeChat message to us.", "已复制！粘贴到微信里发给我们就好。")
+          : t("Couldn't copy automatically — long-press the text below to copy it.", "没能自动复制，请长按下面的文字手动复制。");
+      }
+      function legacyCopy() {
+        rsvpCopyText.focus();
+        rsvpCopyText.select();
+        rsvpCopyText.setSelectionRange(0, rsvpCopyText.value.length);
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) {}
+        done(ok);
+      }
+      // WeChat's browser often lacks the async clipboard API, hence the fallback.
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(rsvpCopyText.value).then(function () { done(true); }, legacyCopy);
+      } else {
+        legacyCopy();
+      }
+    });
+
     document.getElementById("rsvpAgain").addEventListener("click", function () {
       rsvpForm.reset();
+      rsvpFallback.hidden = true;
       rsvpThanks.hidden = true;
       rsvpForm.hidden = false;
       rsvpForm.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });

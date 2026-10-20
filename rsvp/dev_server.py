@@ -19,7 +19,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(ROOT, "rsvp", ".local")
 JSON_PATH = os.path.join(DATA_DIR, "responses.json")
 XLSX_PATH = os.path.join(DATA_DIR, "responses.xlsx")
-FIELDS = {key for key, _, _ in COLUMNS} - {"submittedAt", "firstSubmittedAt"}
+FIELDS = {key for key, _, _ in COLUMNS} - {"submittedAt", "firstSubmittedAt", "source"}
 
 
 def name_key(name):

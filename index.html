@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-lang="en" data-build="20261020e">
+<html lang="en" data-lang="en" data-build="20261020f">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:wght@500;600;700&family=Pinyon+Script&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261020e">
+<link rel="stylesheet" href="style.css?v=20261020f">
 </head>
 <body data-lang="en" class="gate-active">
 
@@ -105,7 +105,7 @@
   </button>
 </div>
 <audio id="bgm" loop preload="none">
-  <source src="music/wedding-song.mp3?v=20261020e" type="audio/mpeg">
+  <source src="music/wedding-song.mp3?v=20261020f" type="audio/mpeg">
 </audio>
 
 <!-- Side scroll nav -->
@@ -328,6 +328,15 @@
       <button type="submit" class="ghost-btn rsvp-submit" id="rsvpSubmit">
         <span class="i18n" data-en="Send" data-zh="提交"></span>
       </button>
+
+      <div class="rsvp-fallback" id="rsvpFallback" hidden>
+        <p class="i18n" data-en="Still not going through? No problem — copy your answers and send them to us on WeChat." data-zh="还是提交不了？没关系——复制你的回答，用微信发给我们就好。"></p>
+        <button type="button" class="ghost-btn" id="rsvpCopy">
+          <span class="i18n" data-en="Copy my answers" data-zh="复制我的回答"></span>
+        </button>
+        <p class="rsvp-copied" id="rsvpCopied" aria-live="polite"></p>
+        <textarea id="rsvpCopyText" readonly rows="6" aria-label="Your answers"></textarea>
+      </div>
     </form>
 
     <div class="rsvp-card rsvp-thanks" id="rsvpThanks" hidden>
@@ -360,6 +369,6 @@
   <button class="lb-nav lb-next" id="lbNext" aria-label="Next image">›</button>
 </div>
 
-<script src="script.js?v=20261020e"></script>
+<script src="script.js?v=20261020f"></script>
 </body>
 </html>

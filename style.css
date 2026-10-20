@@ -550,6 +550,26 @@ body.gate-active .snitch { visibility: hidden; pointer-events: none; }
 .rsvp-submit { display: block; margin: 0 auto; min-width: 160px; }
 .rsvp-submit:disabled { opacity: .55; cursor: wait; transform: none; }
 .rsvp-thanks { text-align: center; }
+.rsvp-fallback {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--gold-light);
+  text-align: center;
+}
+.rsvp-fallback p { margin: 0 0 12px; font-size: 16px; color: var(--gold-deep); }
+.rsvp-fallback .ghost-btn { margin: 0 auto; }
+.rsvp-copied { min-height: 1.4em; margin: 8px 0 !important; font-size: 14px !important; color: var(--gold) !important; }
+.rsvp-fallback textarea {
+  width: 100%;
+  font-family: var(--serif);
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--cream);
+  border: 1px solid var(--gold-light);
+  border-radius: 4px;
+  padding: 10px 12px;
+  resize: vertical;
+}
 .rsvp-thanks .script-name { margin-bottom: 12px; }
 
 /* ---------- footer ---------- */
