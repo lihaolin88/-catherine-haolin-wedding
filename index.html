@@ -3,13 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- WeChat's in-app browser caches pages aggressively; ask it not to.
+     Also bump the ?v= on style.css / script.js whenever they change. -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Catherine & Haolin — December 20, 2026</title>
 <meta name="description" content="Catherine & Haolin are getting married in Oʻahu, Hawaiʻi on December 20th, 2026.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='55' r='22' fill='%23a3823a'/%3E%3Cpath d='M50 45 C20 20, 5 35, 15 50 C25 60, 40 50, 50 45Z' fill='%23cdae6c'/%3E%3Cpath d='M50 45 C80 20, 95 35, 85 50 C75 60, 60 50, 50 45Z' fill='%23cdae6c'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:wght@500;600;700&family=Pinyon+Script&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=20261020">
 </head>
 <body data-lang="en" class="gate-active">
 
@@ -343,6 +348,6 @@
   <button class="lb-nav lb-next" id="lbNext" aria-label="Next image">›</button>
 </div>
 
-<script src="script.js"></script>
+<script src="script.js?v=20261020"></script>
 </body>
 </html>
