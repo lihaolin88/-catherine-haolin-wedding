@@ -3,6 +3,7 @@
 //   POST /rsvp                     a guest submits the form (called by script.js)
 //   GET  /admin?key=…              private page listing every response (phone-friendly)
 //   GET  /admin/responses.xlsx?key=…  download the Excel file
+//   POST /admin/delete?key=…       delete one guest's response (from the admin page)
 //
 // A guest who submits again under the same name (case/spacing ignored)
 // replaces their earlier answers, so mistakes can be fixed by resubmitting.
@@ -24,11 +25,13 @@ export default {
         if (req.method === "OPTIONS") return withCors(new Response(null, { status: 204 }), env);
         if (req.method === "POST") return withCors(await submit(req, env), env);
       }
-      if (url.pathname === "/admin" || url.pathname === "/admin/responses.xlsx") {
+      if (url.pathname.startsWith("/admin")) {
         if (!env.ADMIN_KEY || url.searchParams.get("key") !== env.ADMIN_KEY) {
           return new Response("Not found", { status: 404 });
         }
-        return url.pathname === "/admin" ? await adminPage(env, url) : await downloadXlsx(env);
+        if (url.pathname === "/admin") return await adminPage(env, url);
+        if (url.pathname === "/admin/responses.xlsx") return await downloadXlsx(env);
+        if (url.pathname === "/admin/delete" && req.method === "POST") return await deleteResponse(req, env);
       }
       return new Response("Not found", { status: 404 });
     } catch (err) {
@@ -85,6 +88,35 @@ async function submit(req, env) {
   throw new Error("GitHub PUT kept conflicting");
 }
 
+// Same read-modify-write + retry pattern as submit(), removing one guest by name.
+async function deleteResponse(req, env) {
+  let name;
+  try {
+    name = JSON.parse(await req.text()).name;
+  } catch {
+    return json({ ok: false, error: "invalid_json" }, 400);
+  }
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const { rows, sha } = await readResponses(env);
+    const kept = rows.filter((r) => nameKey(r.name) !== nameKey(name));
+    if (kept.length === rows.length) return json({ ok: false, error: "not_found" }, 404);
+    const res = await gh(env, "contents/responses.json", {
+      method: "PUT",
+      body: JSON.stringify({
+        message: `RSVP deleted: ${name}`,
+        content: toBase64(JSON.stringify(kept, null, 2) + "\n"),
+        sha,
+      }),
+    });
+    if (res.ok) return json({ ok: true });
+    if (res.status !== 409 && res.status !== 422) {
+      throw new Error(`GitHub PUT failed: ${res.status} ${await res.text()}`);
+    }
+    await new Promise((r) => setTimeout(r, 300 + Math.random() * 700));
+  }
+  throw new Error("GitHub PUT kept conflicting");
+}
+
 async function readResponses(env) {
   const res = await gh(env, "contents/responses.json");
   if (res.status === 404) return { rows: [], sha: null };
@@ -133,6 +165,7 @@ async function adminPage(env, url) {
   ${line("酒水 Drinks", r.drinks)}
   ${line("注意事项 Notes", r.notes)}
   ${line("祝福 Blessings", r.wishes)}
+  <button class="del" type="button" data-name="${esc(r.name)}">删除这条回复</button>
 </article>`
     )
     .join("\n");
@@ -177,6 +210,8 @@ h1{color:var(--deep);font-size:24px;margin:0 0 4px}
 .card header{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:8px}
 .card h2{margin:0;font-size:19px;color:var(--deep)}
 .card time{font-size:12px;color:var(--gold);white-space:nowrap}
+.del{margin-top:10px;padding:6px 14px;border:1px solid #c98b78;border-radius:999px;background:none;color:#b4573c;font:inherit;font-size:13px;cursor:pointer}
+.del:disabled{opacity:.5}
 .ln{display:grid;grid-template-columns:110px 1fr;gap:8px;padding:3px 0}
 .ln span{font-size:13px;color:var(--gold)}
 .ln p{margin:0;white-space:pre-wrap;word-break:break-word}
@@ -198,6 +233,14 @@ var BY_DISH=${JSON.stringify(byDish).replace(/</g, () => String.fromCharCode(92)
 var dish=document.getElementById("dish");
 if(dish)dish.addEventListener("change",function(){var ul=document.getElementById("dishNames");ul.innerHTML="";
 (BY_DISH[dish.value]||[]).forEach(function(n){var li=document.createElement("li");li.textContent=n;ul.appendChild(li)})});
+var DELETE_URL=${JSON.stringify("/admin/delete?key=" + encodeURIComponent(url.searchParams.get("key")))};
+document.querySelectorAll(".del").forEach(function(btn){btn.addEventListener("click",function(){
+var name=btn.getAttribute("data-name");
+if(!confirm("确定要删除「"+name+"」的回复吗？它会从这个页面和 Excel 中移除。"))return;
+btn.disabled=true;btn.textContent="删除中…";
+fetch(DELETE_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({name:name})})
+.then(function(r){if(!r.ok)throw new Error(r.status);location.reload()})
+.catch(function(){alert("删除失败，请稍后再试。");btn.disabled=false;btn.textContent="删除这条回复"})})});
 document.getElementById("q").addEventListener("input",function(e){var q=e.target.value.trim().toLowerCase();
 document.querySelectorAll(".card").forEach(function(c){c.style.display=!q||c.dataset.search.indexOf(q)>-1?"":"none"})});
 </script></body></html>`;
