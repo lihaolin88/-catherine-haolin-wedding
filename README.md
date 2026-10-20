@@ -47,6 +47,13 @@ test answers never get published).
   (template in `rsvp/data-repo/`), whose GitHub Action rebuilds the Excel file.
   Responses can be viewed at `https://wedding-rsvp.catherine-haolin.workers.dev/admin?key=<ADMIN_KEY>`.
 
+## Releasing a change (cache busting)
+
+WeChat's in-app browser caches pages aggressively. On every release, bump the
+same new value in three places: `data-build` on `<html>` and the `?v=` on
+`style.css` / `script.js` / the mp3 in `index.html`, plus `BUILD` at the top
+of `script.js`. Visitors holding an old copy then reload automatically.
+
 ## Files
 
 ```

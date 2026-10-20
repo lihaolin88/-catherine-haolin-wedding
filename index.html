@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" data-lang="en">
+<html lang="en" data-lang="en" data-build="20261020d">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- WeChat's in-app browser caches pages aggressively; ask it not to.
-     Also bump the ?v= on style.css / script.js whenever they change. -->
+     On every release bump data-build above, the ?v= on style.css / script.js
+     and BUILD in script.js to the same new value. -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -14,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:wght@500;600;700&family=Pinyon+Script&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261020c">
+<link rel="stylesheet" href="style.css?v=20261020d">
 </head>
 <body data-lang="en" class="gate-active">
 
@@ -104,7 +105,7 @@
   </button>
 </div>
 <audio id="bgm" loop preload="none">
-  <source src="music/wedding-song.mp3?v=20261020c" type="audio/mpeg">
+  <source src="music/wedding-song.mp3?v=20261020d" type="audio/mpeg">
 </audio>
 
 <!-- Side scroll nav -->
@@ -359,6 +360,6 @@
   <button class="lb-nav lb-next" id="lbNext" aria-label="Next image">›</button>
 </div>
 
-<script src="script.js?v=20261020c"></script>
+<script src="script.js?v=20261020d"></script>
 </body>
 </html>

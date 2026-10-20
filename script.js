@@ -1,6 +1,36 @@
 (function () {
   "use strict";
 
+  /* ================= stale-cache self-update ================= */
+  // WeChat's in-app browser can keep serving an old copy of the page for days.
+  // BUILD must match data-build on <html>. If this page is out of date, either
+  // because this script is newer than the HTML or because the server has a newer
+  // HTML, reload once with ?v=<build> so the browser fetches everything fresh.
+  var BUILD = "20261020d";
+  (function checkForNewerBuild() {
+    var pageBuild = document.documentElement.getAttribute("data-build") || "";
+    function reloadFor(build) {
+      var key = "wedding-reloaded-" + build;
+      try {
+        if (sessionStorage.getItem(key)) return; // tried once already, don't loop
+        sessionStorage.setItem(key, "1");
+      } catch (e) { return; }
+      var url = new URL(location.href);
+      url.searchParams.set("v", build);
+      location.replace(url.toString());
+    }
+    if (pageBuild !== BUILD) { reloadFor(BUILD); return; }
+    if (!window.fetch) return;
+    fetch(location.pathname + "?_=" + Date.now(), { cache: "no-store" })
+      .then(function (res) { return res.ok ? res.text() : ""; })
+      .then(function (html) {
+        var m = html.match(/data-build="([^"]+)"/);
+        // only while the envelope is still closed, so nobody is interrupted mid-page
+        if (m && m[1] !== pageBuild && document.body.classList.contains("gate-active")) reloadFor(m[1]);
+      })
+      .catch(function () {});
+  })();
+
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ================= i18n ================= */
