@@ -1,20 +1,27 @@
-"""Turn RSVP responses (a list of dicts) into a formatted Excel sheet."""
+"""Turn RSVP responses (a list of dicts) into a formatted Excel workbook.
+
+Sheet "RSVP" has a filter dropdown on every column header (tap First Course /
+Main Course to see who chose a dish); sheet "By Dish" lists names per dish.
+"""
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 
 # (key in the submitted JSON, column header in the sheet, column width)
 COLUMNS = [
-    ("submittedAt", "Submitted (UTC)", 20),
     ("name", "Name", 18),
-    ("arrival", "Arrival in Hawaii", 16),
     ("firstCourse", "First Course", 30),
     ("mainCourse", "Main Course", 30),
+    ("arrival", "Arrival in Hawaii", 16),
     ("allergies", "Allergies", 24),
     ("drinks", "Alcohol / Wine", 24),
     ("notes", "Anything We Should Know", 36),
     ("wishes", "Blessings", 48),
+    ("submittedAt", "Last Updated (UTC)", 20),
+    ("firstSubmittedAt", "First Submitted (UTC)", 20),
     ("lang", "Lang", 6),
 ]
+
+COURSES = (("firstCourse", "First Course"), ("mainCourse", "Main Course"))
 
 
 def write_xlsx(rows, path):
@@ -38,23 +45,25 @@ def write_xlsx(rows, path):
     ws.freeze_panes = "B2"
     ws.auto_filter.ref = ws.dimensions
 
-    # Dinner head-count so the caterer numbers are one glance away.
-    summary = wb.create_sheet("Dinner Count")
-    summary.append(["Course", "Choice", "Count"])
-    for cell in summary[1]:
-        cell.font = Font(bold=True, color="FFFFFF")
-        cell.fill = header_fill
-    for key, label in (("firstCourse", "First Course"), ("mainCourse", "Main Course")):
-        counts = {}
+    # Who picked what: one block per dish with the count and every guest's name.
+    by_dish = wb.create_sheet("By Dish")
+    by_dish.column_dimensions["A"].width = 38
+    by_dish.column_dimensions["B"].width = 22
+    for key, label in COURSES:
+        groups = {}
         for row in rows:
-            choice = row.get(key) or "(none)"
-            counts[choice] = counts.get(choice, 0) + 1
-        for choice, n in sorted(counts.items()):
-            summary.append([label, choice, n])
-    summary.append([])
-    summary.append(["Total responses", "", len(rows)])
-    summary.column_dimensions["A"].width = 18
-    summary.column_dimensions["B"].width = 36
-    summary.column_dimensions["C"].width = 8
+            groups.setdefault(row.get(key) or "(none)", []).append(row.get("name", ""))
+        by_dish.append([label.upper()])
+        by_dish.cell(by_dish.max_row, 1).font = Font(bold=True, color="FFFFFF")
+        by_dish.cell(by_dish.max_row, 1).fill = header_fill
+        by_dish.cell(by_dish.max_row, 2).fill = header_fill
+        for choice, names in sorted(groups.items()):
+            by_dish.append([f"{choice} ({len(names)})"])
+            by_dish.cell(by_dish.max_row, 1).font = Font(bold=True, color="7C5E28")
+            for name in names:
+                by_dish.append(["", name])
+        by_dish.append([])
+    by_dish.append(["Total responses", len(rows)])
+    by_dish.cell(by_dish.max_row, 1).font = Font(bold=True)
 
     wb.save(path)

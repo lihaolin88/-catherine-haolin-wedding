@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:wght@500;600;700&family=Pinyon+Script&family=Noto+Serif+SC:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261020b">
+<link rel="stylesheet" href="style.css?v=20261020c">
 </head>
 <body data-lang="en" class="gate-active">
 
@@ -104,7 +104,7 @@
   </button>
 </div>
 <audio id="bgm" loop preload="none">
-  <source src="music/wedding-song.mp3?v=20261020b" type="audio/mpeg">
+  <source src="music/wedding-song.mp3?v=20261020c" type="audio/mpeg">
 </audio>
 
 <!-- Side scroll nav -->
@@ -185,7 +185,7 @@
     <p class="tap-hint i18n" data-en="Tap to zoom in on the full schedule" data-zh="点击查看完整行程细节"></p>
 
     <div class="showcase-copy narrow">
-      <p class="tagline i18n" data-en="Lanikuhonua — “Where heaven meets the earth.”" data-zh="Lanikuhonua ——「天堂与人间相遇之处」"></p>
+      <p class="tagline i18n" data-en="Lanikuhonua — “Where sky meets the earth.”" data-zh="Lanikuhonua ——「天空与大地相接之处」"></p>
       <button class="ghost-btn" id="calBtn2">
         <span class="i18n" data-en="Add to Calendar" data-zh="添加到日历"></span>
       </button>
@@ -202,9 +202,14 @@
     <p class="tap-hint i18n" data-en="Tap the image itself to zoom in" data-zh="点击图片可放大查看"></p>
 
     <div class="showcase-copy narrow">
-      <a class="ghost-btn" href="https://www.google.com/maps/search/?api=1&query=Lanikuhonua+Cultural+%26+Educational+Park+Oahu+Hawaii" target="_blank" rel="noopener">
-        <span class="i18n" data-en="Open in Google Maps" data-zh="在谷歌地图中打开"></span>
-      </a>
+      <div class="btn-row">
+        <a class="ghost-btn" href="https://www.google.com/maps/search/?api=1&query=Lanikuhonua+Cultural+%26+Educational+Park+Oahu+Hawaii" target="_blank" rel="noopener">
+          <span class="i18n" data-en="Open in Google Maps" data-zh="在谷歌地图中打开"></span>
+        </a>
+        <a class="ghost-btn" href="https://uri.amap.com/marker?position=-158.1278,21.3445&amp;name=Lanikuhonua%20(92-1101%20Ali%CA%BBinui%20Dr%2C%20Kapolei)&amp;coordinate=wgs84&amp;callnative=1&amp;src=catherine-haolin-wedding" target="_blank" rel="noopener">
+          <span class="i18n" data-en="Open in Amap" data-zh="在高德地图中打开"></span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -243,10 +248,13 @@
     <div class="frame-card showcase-img travel-frame reveal">
       <img src="6.jpg" alt="Illustrated Aloha travel map showing flight paths from China, US East Coast and US West Coast to Oʻahu, Hawaii" loading="lazy" class="frame-img" data-lightbox="5">
     </div>
-    <p class="tap-hint i18n" data-en="Tap to explore the whole island chain" data-zh="点击查看完整海岛地图"></p>
+    <p class="tap-hint i18n" data-en="Tap the map to see it up close" data-zh="点击地图可放大查看"></p>
 
     <div class="showcase-copy narrow">
-      <p class="letter-p i18n" data-en="However far you're coming from, thank you for making the journey to celebrate with us." data-zh="无论你从多远赶来，都万分感谢你为了这场庆典踏上旅程。"></p>
+      <a class="ghost-btn" href="https://www.gohawaii.com/islands/oahu" target="_blank" rel="noopener">
+        <span class="i18n" data-en="Discover Oʻahu ↗" data-zh="探索瓦胡岛 ↗"></span>
+      </a>
+      <p class="letter-p travel-thanks i18n" data-en="However far you're coming from, thank you for making the journey to celebrate with us." data-zh="无论你从多远赶来，都万分感谢你为了这场庆典踏上旅程。"></p>
     </div>
   </section>
 
@@ -254,6 +262,7 @@
   <section id="rsvp" class="section showcase">
     <h2 class="script-name small i18n" data-en="RSVP" data-zh="宾客问卷"></h2>
     <p class="tagline i18n" data-en="Help us prepare the perfect day for you." data-zh="帮我们为你准备最好的一天。"></p>
+    <p class="rsvp-note i18n" data-en="Made a mistake? Just submit again with the same name — your new answers will replace the old ones." data-zh="填错了？用同样的名字再提交一次，新的回答会覆盖之前的。"></p>
 
     <form class="rsvp-card reveal" id="rsvpForm" novalidate>
       <fieldset class="rsvp-group">
@@ -322,7 +331,7 @@
 
     <div class="rsvp-card rsvp-thanks" id="rsvpThanks" hidden>
       <p class="script-name small i18n" data-en="Mahalo!" data-zh="谢谢你！"></p>
-      <p class="letter-p i18n" data-en="We've received your answers. See you in Hawaiʻi." data-zh="我们已收到你的回复，夏威夷见。"></p>
+      <p class="letter-p i18n" id="rsvpThanksMsg" data-en="We've received your answers. See you in Hawaiʻi." data-zh="我们已收到你的回复，夏威夷见。"></p>
       <button type="button" class="top-btn" id="rsvpAgain">
         <span class="i18n" data-en="Submit another response" data-zh="再填写一份"></span>
       </button>
@@ -350,6 +359,6 @@
   <button class="lb-nav lb-next" id="lbNext" aria-label="Next image">›</button>
 </div>
 
-<script src="script.js?v=20261020b"></script>
+<script src="script.js?v=20261020c"></script>
 </body>
 </html>

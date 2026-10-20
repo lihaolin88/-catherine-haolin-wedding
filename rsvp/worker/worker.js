@@ -4,6 +4,9 @@
 //   GET  /admin?key=…              private page listing every response (phone-friendly)
 //   GET  /admin/responses.xlsx?key=…  download the Excel file
 //
+// A guest who submits again under the same name (case/spacing ignored)
+// replaces their earlier answers, so mistakes can be fixed by resubmitting.
+//
 // Responses are stored as responses.json in a private GitHub repo; a GitHub
 // Action in that repo rebuilds responses.xlsx / responses.csv on every change.
 //
@@ -49,22 +52,31 @@ async function submit(req, env) {
   if (!row.name || !row.firstCourse || !row.mainCourse) {
     return json({ ok: false, error: "missing_fields" }, 400);
   }
-  row.submittedAt = new Date().toISOString().slice(0, 16).replace("T", " ");
+  row.name = row.name.replace(/\s+/g, " ");
+  const now = new Date().toISOString().slice(0, 19).replace("T", " ");
+  row.submittedAt = now;
 
   // Read-modify-write with the file's sha; retry if another submission
   // landed in between (GitHub answers 409/422 on a stale sha).
   for (let attempt = 0; attempt < 5; attempt++) {
     const { rows, sha } = await readResponses(env);
-    rows.push(row);
+    const idx = rows.findIndex((r) => nameKey(r.name) === nameKey(row.name));
+    if (idx >= 0) {
+      row.firstSubmittedAt = rows[idx].firstSubmittedAt || rows[idx].submittedAt;
+      rows[idx] = row;
+    } else {
+      row.firstSubmittedAt = now;
+      rows.push(row);
+    }
     const res = await gh(env, "contents/responses.json", {
       method: "PUT",
       body: JSON.stringify({
-        message: `RSVP: ${row.name}`,
+        message: `RSVP ${idx >= 0 ? "updated" : "new"}: ${row.name}`,
         content: toBase64(JSON.stringify(rows, null, 2) + "\n"),
         ...(sha ? { sha } : {}),
       }),
     });
-    if (res.ok) return json({ ok: true });
+    if (res.ok) return json({ ok: true, updated: idx >= 0 });
     if (res.status !== 409 && res.status !== 422) {
       throw new Error(`GitHub PUT failed: ${res.status} ${await res.text()}`);
     }
@@ -97,7 +109,7 @@ async function downloadXlsx(env) {
 
 async function adminPage(env, url) {
   const { rows } = await readResponses(env);
-  rows.reverse(); // newest first
+  rows.sort((a, b) => (b.submittedAt || "").localeCompare(a.submittedAt || "")); // newest first
 
   const count = (key) => {
     const c = {};
@@ -113,7 +125,7 @@ async function adminPage(env, url) {
   const cards = rows
     .map(
       (r) => `<article class="card" data-search="${esc(Object.values(r).join(" ").toLowerCase())}">
-  <header><h2>${esc(r.name)}</h2><time>${esc(r.submittedAt)} UTC</time></header>
+  <header><h2>${esc(r.name)}</h2><time>${esc(r.submittedAt)} UTC${r.firstSubmittedAt && r.firstSubmittedAt !== r.submittedAt ? " · 已修改" : ""}</time></header>
   ${line("抵达 Arrival", r.arrival)}
   ${line("头盘 First course", r.firstCourse)}
   ${line("主菜 Main course", r.mainCourse)}
@@ -124,6 +136,21 @@ async function adminPage(env, url) {
 </article>`
     )
     .join("\n");
+
+  const byDish = {};
+  for (const [label, key] of [["头盘", "firstCourse"], ["主菜", "mainCourse"]]) {
+    for (const r of rows) {
+      const k = `${label} · ${r[key] || "—"}`;
+      (byDish[k] = byDish[k] || []).push(r.name);
+    }
+  }
+  const dishPicker = rows.length
+    ? `<div class="tally picker"><h3>按菜品查看谁选了</h3>
+<select id="dish"><option value="">选择一道菜…</option>${Object.keys(byDish)
+        .sort()
+        .map((k) => `<option value="${esc(k)}">${esc(k)}（${byDish[k].length}）</option>`)
+        .join("")}</select><ul id="dishNames"></ul></div>`
+    : "";
 
   const xlsxHref = `/admin/responses.xlsx?key=${encodeURIComponent(url.searchParams.get("key"))}`;
   const html = `<!DOCTYPE html>
@@ -154,14 +181,23 @@ h1{color:var(--deep);font-size:24px;margin:0 0 4px}
 .ln span{font-size:13px;color:var(--gold)}
 .ln p{margin:0;white-space:pre-wrap;word-break:break-word}
 .empty{text-align:center;color:var(--gold);padding:40px 0}
+.picker{margin-bottom:22px}
+.picker select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font:inherit;background:var(--cream);color:var(--ink)}
+.picker ul{margin:10px 0 0;padding-left:20px}
+.picker li{padding:2px 0}
 </style></head><body><main>
 <h1>宾客问卷回复</h1>
 <p class="sub">共 ${rows.length} 份 · 刷新页面即可看到最新回复</p>
 <div class="bar"><input id="q" type="search" placeholder="搜索名字、过敏、祝福…"><a class="btn" href="${xlsxHref}">下载 Excel</a></div>
 ${rows.length ? `<div class="tallies">${tally("头盘 First course", "firstCourse")}${tally("主菜 Main course", "mainCourse")}</div>` : ""}
+${dishPicker}
 ${cards || '<p class="empty">还没有人填写</p>'}
 </main>
 <script>
+var BY_DISH=${JSON.stringify(byDish).replace(/</g, () => String.fromCharCode(92) + "u003c")};
+var dish=document.getElementById("dish");
+if(dish)dish.addEventListener("change",function(){var ul=document.getElementById("dishNames");ul.innerHTML="";
+(BY_DISH[dish.value]||[]).forEach(function(n){var li=document.createElement("li");li.textContent=n;ul.appendChild(li)})});
 document.getElementById("q").addEventListener("input",function(e){var q=e.target.value.trim().toLowerCase();
 document.querySelectorAll(".card").forEach(function(c){c.style.display=!q||c.dataset.search.indexOf(q)>-1?"":"none"})});
 </script></body></html>`;
@@ -183,6 +219,10 @@ function gh(env, path, init = {}) {
       ...(init.headers || {}),
     },
   });
+}
+
+function nameKey(name) {
+  return String(name || "").normalize("NFKC").replace(/\s+/g, " ").trim().toLowerCase();
 }
 
 function withCors(res, env) {

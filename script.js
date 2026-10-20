@@ -495,6 +495,17 @@
         body: JSON.stringify(data)
       }).then(function (res) {
         if (!res.ok) throw new Error("HTTP " + res.status);
+        return res.json();
+      }).then(function (result) {
+        var msg = document.getElementById("rsvpThanksMsg");
+        if (result && result.updated) {
+          msg.setAttribute("data-en", "Your answers have been updated. See you in Hawaiʻi.");
+          msg.setAttribute("data-zh", "你的回复已更新，夏威夷见。");
+        } else {
+          msg.setAttribute("data-en", "We've received your answers. See you in Hawaiʻi.");
+          msg.setAttribute("data-zh", "我们已收到你的回复，夏威夷见。");
+        }
+        msg.textContent = msg.getAttribute("data-" + body.getAttribute("data-lang"));
         rsvpForm.hidden = true;
         rsvpThanks.hidden = false;
         rsvpThanks.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });

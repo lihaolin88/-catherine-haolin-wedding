@@ -255,6 +255,9 @@ body.gate-active .snitch { visibility: hidden; pointer-events: none; }
 }
 .showcase-copy.narrow { max-width: 520px; }
 .showcase-copy .ghost-btn { display: block; width: max-content; margin: 6px auto 0; }
+.btn-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.btn-row .ghost-btn { margin: 0; }
+.showcase-copy .travel-thanks { margin-top: 26px; text-align: center; }
 
 .translation-toggle {
   width: 100%;
@@ -472,6 +475,7 @@ body.gate-active .snitch { visibility: hidden; pointer-events: none; }
 }
 
 /* ---------- rsvp questionnaire ---------- */
+.rsvp-note { font-size: 15px; color: var(--gold); max-width: 520px; margin: -12px 0 22px; }
 .rsvp-card {
   position: relative;
   width: 100%;

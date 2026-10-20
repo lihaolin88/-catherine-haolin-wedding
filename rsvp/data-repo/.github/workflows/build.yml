@@ -2,7 +2,7 @@ name: Build spreadsheet
 
 on:
   push:
-    paths: [responses.json]
+    paths: [responses.json, xlsx.py, build.py, .github/workflows/build.yml]
   workflow_dispatch:
 
 permissions:

@@ -8,6 +8,7 @@ Submissions are saved to rsvp/.local/responses.json and rsvp/.local/responses.xl
 import json
 import os
 import sys
+import unicodedata
 from datetime import datetime, timezone
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
@@ -18,7 +19,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(ROOT, "rsvp", ".local")
 JSON_PATH = os.path.join(DATA_DIR, "responses.json")
 XLSX_PATH = os.path.join(DATA_DIR, "responses.xlsx")
-FIELDS = {key for key, _, _ in COLUMNS} - {"submittedAt"}
+FIELDS = {key for key, _, _ in COLUMNS} - {"submittedAt", "firstSubmittedAt"}
+
+
+def name_key(name):
+    return " ".join(unicodedata.normalize("NFKC", name).split()).lower()
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -39,14 +44,23 @@ class Handler(SimpleHTTPRequestHandler):
         if not row["name"]:
             self.send_error(400, "Name is required")
             return
-        row["submittedAt"] = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
+        now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+        row["submittedAt"] = now
 
         os.makedirs(DATA_DIR, exist_ok=True)
         rows = []
         if os.path.exists(JSON_PATH):
             with open(JSON_PATH, encoding="utf-8") as f:
                 rows = json.load(f)
-        rows.append(row)
+        # same name (case/spacing ignored) replaces the earlier answers, like the Worker
+        match = [i for i, r in enumerate(rows) if name_key(r["name"]) == name_key(row["name"])]
+        updated = bool(match)
+        if updated:
+            row["firstSubmittedAt"] = rows[match[0]].get("firstSubmittedAt") or rows[match[0]]["submittedAt"]
+            rows[match[0]] = row
+        else:
+            row["firstSubmittedAt"] = now
+            rows.append(row)
         with open(JSON_PATH, "w", encoding="utf-8") as f:
             json.dump(rows, f, ensure_ascii=False, indent=2)
         write_xlsx(rows, XLSX_PATH)
@@ -55,7 +69,7 @@ class Handler(SimpleHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
         self.end_headers()
-        self.wfile.write(b'{"ok":true}')
+        self.wfile.write(json.dumps({"ok": True, "updated": updated}).encode())
 
 
 if __name__ == "__main__":
